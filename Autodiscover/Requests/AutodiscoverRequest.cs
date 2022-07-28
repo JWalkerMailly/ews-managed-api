@@ -480,7 +480,11 @@ namespace Microsoft.Exchange.WebServices.Autodiscover
             string contentEncoding = response.ContentEncoding;
             Stream responseStream = response.GetResponseStream();
 
-            if (contentEncoding.ToLowerInvariant().Contains("gzip"))
+            if (string.IsNullOrEmpty(contentEncoding))
+			{
+                return responseStream;
+			}
+            else if (contentEncoding.ToLowerInvariant().Contains("gzip"))
             {
                 return new GZipStream(responseStream, CompressionMode.Decompress);
             }
